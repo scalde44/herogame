@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class FeatureDocumentValue {
+public class NameDocumentValue {
     private String value;
 }

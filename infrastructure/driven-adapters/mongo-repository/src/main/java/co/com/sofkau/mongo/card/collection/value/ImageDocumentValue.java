@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-public class FeatureDocumentValue {
-    private String value;
+public class ImageDocumentValue {
+    private String name;
+    private String url;
 }

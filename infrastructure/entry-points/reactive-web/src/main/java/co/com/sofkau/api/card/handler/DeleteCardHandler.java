@@ -1,8 +1,7 @@
 package co.com.sofkau.api.card.handler;
 
-import co.com.sofkau.api.card.dto.CardDTO;
 import co.com.sofkau.api.card.helper.MapperCard;
-import co.com.sofkau.usecase.card.CreateCardUseCase;
+import co.com.sofkau.usecase.card.DeleteCardUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,18 +12,17 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class CreateCardHandler {
-    private final CreateCardUseCase useCase;
+public class DeleteCardHandler {
+    private final DeleteCardUseCase useCase;
     private final MapperCard mapperCard;
 
-    public Mono<ServerResponse> create(ServerRequest serverRequest) {
-        return serverRequest
-                .bodyToMono(CardDTO.class)
-                .map(cardDTO -> this.mapperCard.mapperToCard(null).apply(cardDTO))
-                .flatMap(this.useCase::apply)
-                .map(this.mapperCard.mapCardToDTO())
+    public Mono<ServerResponse> delete(ServerRequest serverRequest) {
+        return Mono.just(
+                        serverRequest.pathVariable("id")
+                )
+                .flatMap(useCase::apply)
                 .flatMap(card -> ServerResponse
-                        .status(HttpStatus.CREATED)
+                        .status(HttpStatus.NO_CONTENT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .bodyValue(card)
                 );

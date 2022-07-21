@@ -1,30 +1,26 @@
 package co.com.sofkau.mongo.helper;
 
-import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.function.Function;
 
 import static org.springframework.data.domain.Example.of;
 
 public abstract class AdapterOperations<E, D, I, R extends ReactiveCrudRepository<D, I> & ReactiveQueryByExampleExecutor<D>> {
 
     protected R repository;
-    protected ObjectMapper mapper;
+    protected MapperGeneric mapper;
     private final Class<D> dataClass;
-    private final Function<D, E> toEntityFn;
 
     @SuppressWarnings("unchecked")
-    public AdapterOperations(R repository, ObjectMapper mapper, Function<D, E> toEntityFn) {
+    public AdapterOperations(R repository, MapperGeneric mapper) {
         this.repository = repository;
         this.mapper = mapper;
         ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
         this.dataClass = (Class<D>) genericSuperclass.getActualTypeArguments()[1];
-        this.toEntityFn = toEntityFn;
     }
 
     public Mono<E> save(E entity) {
@@ -67,11 +63,11 @@ public abstract class AdapterOperations<E, D, I, R extends ReactiveCrudRepositor
     }
 
     protected D toData(E entity) {
-        return mapper.map(entity, dataClass);
+        return (D) mapper.toData(entity);
     }
 
     protected E toEntity(D data) {
-        return toEntityFn.apply(data);
+        return (E) mapper.toEntity(data);
     }
 
 }
