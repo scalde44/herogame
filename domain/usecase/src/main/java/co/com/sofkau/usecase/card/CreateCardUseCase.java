@@ -1,4 +1,4 @@
-package co.com.sofkau.usecase.card.createcard;
+package co.com.sofkau.usecase.card;
 
 import co.com.sofkau.model.card.Card;
 import co.com.sofkau.model.card.gateways.CardRepository;

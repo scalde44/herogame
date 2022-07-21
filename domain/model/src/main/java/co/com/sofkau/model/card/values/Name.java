@@ -4,12 +4,12 @@ import co.com.sofkau.model.generic.ValueObject;
 
 import java.util.Objects;
 
-public class Feature implements ValueObject<String> {
-    private static final String FEATURE_REQUERIDO = "La feature es requerida";
+public class Name implements ValueObject<String> {
+    private static final String NOMBRE_REQUERIDO = "El nombre es requerido";
     private final String value;
 
-    public Feature(String value) {
-        this.value = Objects.requireNonNull(value, FEATURE_REQUERIDO);
+    public Name(String value) {
+        this.value = Objects.requireNonNull(value, NOMBRE_REQUERIDO);
     }
 
     @Override
@@ -21,8 +21,8 @@ public class Feature implements ValueObject<String> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Feature feature = (Feature) o;
-        return value.equals(feature.value);
+        Name name = (Name) o;
+        return value.equals(name.value);
     }
 
     @Override

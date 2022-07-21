@@ -1,21 +1,57 @@
 package co.com.sofkau.model.card;
 
 import co.com.sofkau.model.card.values.Feature;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import co.com.sofkau.model.card.values.Image;
+import co.com.sofkau.model.card.values.Name;
+import co.com.sofkau.model.card.values.Power;
 
 import java.util.Set;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder(toBuilder = true)
+
 public class Card {
     private String id;
-    private String description;
-    private Integer power;
+    private Name name;
+    private Power power;
     private Set<Feature> features;
-    private String imageUrl;
+    private Image image;
+
+    public Card(String id, Name name, Power power, Set<Feature> features, Image image) {
+        this.id = id;
+        this.name = name;
+        this.power = power;
+        this.features = features;
+        this.image = image;
+    }
+
+    public void updateImage(Image image) {
+        this.image = image;
+    }
+
+    public void updatePower(Power power) {
+        this.power = power;
+    }
+
+    public String id() {
+        return id;
+    }
+
+    public String name() {
+        return name.value();
+    }
+
+    public Integer power() {
+        return power.value();
+    }
+
+    public Set<Feature> features() {
+        return Set.copyOf(features);
+    }
+
+    public String imageName() {
+        return image.value().name();
+    }
+
+    public String imageUrl() {
+        return image.value().url();
+    }
 }
