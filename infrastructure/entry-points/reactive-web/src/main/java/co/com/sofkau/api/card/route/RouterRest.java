@@ -1,6 +1,9 @@
 package co.com.sofkau.api.card.route;
 
-import co.com.sofkau.api.card.handler.*;
+import co.com.sofkau.api.card.handler.CreateCardHandler;
+import co.com.sofkau.api.card.handler.DeleteCardHandler;
+import co.com.sofkau.api.card.handler.FindAllCardsHandler;
+import co.com.sofkau.api.card.handler.UpdateCardHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -23,13 +26,8 @@ public class RouterRest {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> routerUpdatePowerCardFunction(UpdatePowerCardHandler handler) {
-        return route(PUT("/api/v1/cards/{id}/power"), handler::update);
-    }
-
-    @Bean
-    public RouterFunction<ServerResponse> routerUpdateImageCardFunction(UpdateImageCardHandler handler) {
-        return route(PUT("/api/v1/cards/{id}/image"), handler::update);
+    public RouterFunction<ServerResponse> routerUpdatePowerCardFunction(UpdateCardHandler handler) {
+        return route(PUT("/api/v1/cards/{id}"), handler::update);
     }
 
     @Bean

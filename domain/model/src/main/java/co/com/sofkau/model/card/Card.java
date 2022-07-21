@@ -23,12 +23,20 @@ public class Card {
         this.image = image;
     }
 
+    public void updateName(Name name) {
+        this.name = name;
+    }
+
     public void updateImage(Image image) {
         this.image = image;
     }
 
     public void updatePower(Power power) {
         this.power = power;
+    }
+
+    public void updateFeatures(Set<Feature> features) {
+        this.features = features;
     }
 
     public String id() {

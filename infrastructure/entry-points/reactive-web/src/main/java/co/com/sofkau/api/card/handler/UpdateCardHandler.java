@@ -1,9 +1,8 @@
 package co.com.sofkau.api.card.handler;
 
-import co.com.sofkau.api.card.dto.ImageDTO;
+import co.com.sofkau.api.card.dto.CardDTO;
 import co.com.sofkau.api.card.helper.MapperCard;
-import co.com.sofkau.model.card.values.Image;
-import co.com.sofkau.usecase.card.UpdateImageCardUseCase;
+import co.com.sofkau.usecase.card.UpdateCardUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,19 +13,16 @@ import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
-public class UpdateImageCardHandler {
-    private final UpdateImageCardUseCase useCase;
+public class UpdateCardHandler {
+    private final UpdateCardUseCase useCase;
     private final MapperCard mapperCard;
 
     public Mono<ServerResponse> update(ServerRequest serverRequest) {
         return serverRequest
-                .bodyToMono(ImageDTO.class)
+                .bodyToMono(CardDTO.class)
                 .zipWith(Mono.just(serverRequest.pathVariable("id")))
-                .flatMap(objects ->
-                        this.useCase.apply(
-                                new Image(objects.getT1().getName(), objects.getT1().getUrl()),
-                                objects.getT2())
-                )
+                .map(objects -> this.mapperCard.mapperToCard(objects.getT2()).apply(objects.getT1()))
+                .flatMap(card -> this.useCase.apply(card, card.id()))
                 .map(this.mapperCard.mapCardToDTO())
                 .flatMap(card -> ServerResponse
                         .status(HttpStatus.CREATED)
