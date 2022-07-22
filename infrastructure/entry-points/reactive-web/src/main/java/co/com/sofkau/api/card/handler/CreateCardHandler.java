@@ -20,9 +20,9 @@ public class CreateCardHandler {
     public Mono<ServerResponse> create(ServerRequest serverRequest) {
         return serverRequest
                 .bodyToMono(CardDTO.class)
-                .map(cardDTO -> this.mapperCard.mapperToCard(null).apply(cardDTO))
+                .map(cardDTO -> this.mapperCard.mapToModel(null).apply(cardDTO))
                 .flatMap(this.useCase::apply)
-                .map(this.mapperCard.mapCardToDTO())
+                .map(this.mapperCard.mapToDTO())
                 .flatMap(card -> ServerResponse
                         .status(HttpStatus.CREATED)
                         .contentType(MediaType.APPLICATION_JSON)

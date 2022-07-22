@@ -21,6 +21,6 @@ public class FindAllCardsHandler {
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromPublisher(this.useCase.get()
-                        .map(this.mapperCard.mapCardToDTO()), CardDTO.class));
+                        .map(this.mapperCard.mapToDTO()), CardDTO.class));
     }
 }

@@ -21,9 +21,9 @@ public class UpdateCardHandler {
         return serverRequest
                 .bodyToMono(CardDTO.class)
                 .zipWith(Mono.just(serverRequest.pathVariable("id")))
-                .map(objects -> this.mapperCard.mapperToCard(objects.getT2()).apply(objects.getT1()))
+                .map(objects -> this.mapperCard.mapToModel(objects.getT2()).apply(objects.getT1()))
                 .flatMap(card -> this.useCase.apply(card, card.id()))
-                .map(this.mapperCard.mapCardToDTO())
+                .map(this.mapperCard.mapToDTO())
                 .flatMap(card -> ServerResponse
                         .status(HttpStatus.CREATED)
                         .contentType(MediaType.APPLICATION_JSON)

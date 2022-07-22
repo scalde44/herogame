@@ -1,6 +1,7 @@
 package co.com.sofkau.api.card.helper;
 
 import co.com.sofkau.api.card.dto.CardDTO;
+import co.com.sofkau.api.helper.MapperGeneric;
 import co.com.sofkau.model.card.Card;
 import co.com.sofkau.model.card.values.Feature;
 import co.com.sofkau.model.card.values.Image;
@@ -13,8 +14,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class MapperCard {
-    public Function<CardDTO, Card> mapperToCard(String id) {
+public class MapperCard implements MapperGeneric<CardDTO, Card> {
+
+    @Override
+    public Function<CardDTO, Card> mapToModel(String id) {
         return cardDTO -> new Card(
                 id,
                 new Name(cardDTO.getName()),
@@ -24,7 +27,8 @@ public class MapperCard {
         );
     }
 
-    public Function<Card, CardDTO> mapCardToDTO() {
+    @Override
+    public Function<Card, CardDTO> mapToDTO() {
         return entity -> CardDTO.builder()
                 .id(entity.id())
                 .name(entity.name())
@@ -35,7 +39,6 @@ public class MapperCard {
                 .build();
     }
 
-
     private Set<Feature> featuresDtoToFeatures(Set<String> featuresDto) {
         return featuresDto.stream().map(feature -> new Feature(feature)).collect(Collectors.toSet());
     }
@@ -43,5 +46,6 @@ public class MapperCard {
     private Set<String> featuresToFeaturesDto(Set<Feature> features) {
         return features.stream().map(feature -> feature.value()).collect(Collectors.toSet());
     }
+
 
 }
