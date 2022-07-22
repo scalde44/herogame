@@ -2,7 +2,7 @@ package co.com.sofkau.api.helper;
 
 import java.util.function.Function;
 
-public interface MapperGeneric<D, M> {
+public interface MapperGenericDto<D, M> {
 
     Function<D, M> mapToModel(String id);
 

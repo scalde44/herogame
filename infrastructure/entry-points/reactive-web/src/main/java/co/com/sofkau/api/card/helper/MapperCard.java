@@ -1,7 +1,7 @@
 package co.com.sofkau.api.card.helper;
 
 import co.com.sofkau.api.card.dto.CardDTO;
-import co.com.sofkau.api.helper.MapperGeneric;
+import co.com.sofkau.api.helper.MapperGenericDto;
 import co.com.sofkau.model.card.Card;
 import co.com.sofkau.model.card.values.Feature;
 import co.com.sofkau.model.card.values.Image;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class MapperCard implements MapperGeneric<CardDTO, Card> {
+public class MapperCard implements MapperGenericDto<CardDTO, Card> {
 
     @Override
     public Function<CardDTO, Card> mapToModel(String id) {
