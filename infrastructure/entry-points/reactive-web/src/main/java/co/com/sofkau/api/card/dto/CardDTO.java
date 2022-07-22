@@ -16,6 +16,5 @@ public class CardDTO {
     private String name;
     private Integer power;
     private Set<String> features;
-    private String imageName;
     private String imageUrl;
 }

@@ -21,7 +21,7 @@ public class UpdateCardUseCase implements BiFunction<Card, String, Mono<Card>> {
                 .map(c -> {
                     c.updateName(new Name(card.name()));
                     c.updatePower(new Power(card.power()));
-                    c.updateImage(new Image(card.imageName(), card.imageUrl()));
+                    c.updateImage(new Image(card.imageUrl()));
                     c.updateFeatures(card.features());
                     return c;
                 })

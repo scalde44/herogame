@@ -55,11 +55,7 @@ public class Card {
         return Set.copyOf(features);
     }
 
-    public String imageName() {
-        return image.value().name();
-    }
-
     public String imageUrl() {
-        return image.value().url();
+        return image.value();
     }
 }

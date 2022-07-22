@@ -23,7 +23,7 @@ public class MapperCard implements MapperGenericDto<CardDTO, Card> {
                 new Name(cardDTO.getName()),
                 new Power(cardDTO.getPower().intValue()),
                 featuresDtoToFeatures(cardDTO.getFeatures()),
-                new Image(cardDTO.getImageName(), cardDTO.getImageUrl())
+                new Image(cardDTO.getImageUrl())
         );
     }
 
@@ -34,7 +34,6 @@ public class MapperCard implements MapperGenericDto<CardDTO, Card> {
                 .name(entity.name())
                 .power(entity.power())
                 .features(featuresToFeaturesDto(entity.features()))
-                .imageName(entity.imageName())
                 .imageUrl(entity.imageUrl())
                 .build();
     }

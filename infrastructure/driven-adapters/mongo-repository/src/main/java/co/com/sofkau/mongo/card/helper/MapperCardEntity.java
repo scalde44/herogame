@@ -26,7 +26,6 @@ public class MapperCardEntity implements MapperGeneric<Card, CardDocument> {
                 new Power(entity.getPower().getValue()),
                 featuresEntityToFeatures(entity.getFeatures()),
                 new Image(
-                        entity.getImage().getName(),
                         entity.getImage().getUrl()
                 )
         );
@@ -39,7 +38,7 @@ public class MapperCardEntity implements MapperGeneric<Card, CardDocument> {
                 .name(new NameDocumentValue(model.name()))
                 .power(new PowerDocumentValue(model.power()))
                 .features(featuresToFeaturesEntity(model.features()))
-                .image(new ImageDocumentValue(model.imageName(), model.imageUrl()))
+                .image(new ImageDocumentValue(model.imageUrl()))
                 .build();
     }
 
