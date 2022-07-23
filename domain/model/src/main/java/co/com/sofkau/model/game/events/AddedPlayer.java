@@ -8,7 +8,7 @@ public class AddedPlayer extends DomainEvent {
     private final String userId;
 
     public AddedPlayer(PlayerId identity, String userId) {
-        super("herogame.game.AddedPlayer");
+        super("game.AddedPlayer");
         this.identity = identity;
         this.userId = userId;
     }

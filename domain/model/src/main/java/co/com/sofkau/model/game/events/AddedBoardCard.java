@@ -5,11 +5,12 @@ import co.com.sofkau.model.game.values.GameCard;
 import co.com.sofkau.model.generic.DomainEvent;
 
 public class AddedBoardCard extends DomainEvent {
+    public static final String EVENT_TYPE = "game.AddedBoardCard";
     private final PlayerId playerId;
     private final GameCard gameCard;
 
     public AddedBoardCard(PlayerId playerId, GameCard gameCard) {
-        super("herogame.game.AddedBoardCard");
+        super(EVENT_TYPE);
         this.playerId = playerId;
         this.gameCard = gameCard;
     }

@@ -7,11 +7,12 @@ import co.com.sofkau.model.generic.DomainEvent;
 import java.util.Set;
 
 public class DistributedCards extends DomainEvent {
+    public static final String EVENT_TYPE = "game.DistributedCards";
     private final PlayerId playerId;
     private final Set<GameCard> gameCards;
 
     public DistributedCards(PlayerId playerId, Set<GameCard> gameCards) {
-        super("herogame.game.DistributedCards");
+        super(EVENT_TYPE);
         this.playerId = playerId;
         this.gameCards = gameCards;
     }
