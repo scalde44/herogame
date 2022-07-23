@@ -2,7 +2,6 @@ package co.com.sofkau.model.game.values;
 
 import co.com.sofkau.model.generic.ValueObject;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
@@ -12,14 +11,10 @@ public class DateGame implements ValueObject<String> {
     private final LocalDate date;
     private final String format;
 
-    public DateGame(int day, int month, int year) {
-        try {
-            date = LocalDate.of(year, month, day);
-            if (date.isAfter(LocalDate.now())) {
-                throw new IllegalArgumentException("La fecha no puede ser mayor a la actual");
-            }
-        } catch (DateTimeException e) {
-            throw new IllegalArgumentException(e.getMessage());
+    public DateGame(LocalDate localDate) {
+        this.date = Objects.requireNonNull(localDate);
+        if (date.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha no puede ser mayor a la actual");
         }
         format = generateFormat();
     }
