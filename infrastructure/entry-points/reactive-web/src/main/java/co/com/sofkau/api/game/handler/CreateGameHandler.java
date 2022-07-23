@@ -2,6 +2,7 @@ package co.com.sofkau.api.game.handler;
 
 import co.com.sofkau.api.helper.HandlerBase;
 import co.com.sofkau.model.game.commands.CreateGameCommand;
+import co.com.sofkau.model.generic.EventBus;
 import co.com.sofkau.model.generic.EventStoreRepository;
 import co.com.sofkau.model.generic.StoredEvent;
 import co.com.sofkau.usecase.game.CreateGameUseCase;
@@ -16,10 +17,11 @@ import reactor.core.publisher.Mono;
 public class CreateGameHandler extends HandlerBase {
     private final CreateGameUseCase useCase;
 
-    public CreateGameHandler(EventStoreRepository repository, StoredEvent.EventSerializer eventSerializer, CreateGameUseCase useCase) {
-        super(repository, eventSerializer);
+    public CreateGameHandler(EventStoreRepository repository, StoredEvent.EventSerializer eventSerializer, EventBus eventBus, CreateGameUseCase useCase) {
+        super(repository, eventSerializer, eventBus);
         this.useCase = useCase;
     }
+
 
     public Mono<ServerResponse> create(ServerRequest serverRequest) {
         return serverRequest

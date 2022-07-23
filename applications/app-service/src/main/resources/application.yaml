@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 spring:
   application:
     name: "herogame"
@@ -13,8 +13,10 @@ spring:
     include: null
   data:
     mongodb:
-      uri: "mongodb://localhost:27017"
-      database: "herogame"
+      uri: ${MONGO_URI:mongodb://localhost:27017}
+      database: ${MONGO_DATABASE:herogame}
+  rabbitmq:
+    addresses: { BUS_URI:amqp://guest:guest@localhost:5672 }
 management:
   endpoints:
     web:
@@ -24,3 +26,10 @@ management:
     health:
       probes:
         enabled: true
+queues:
+  exchange: herogame
+  game:
+    name: game.handles
+    routing:
+      key: game.*
+

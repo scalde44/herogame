@@ -1,8 +1,10 @@
 package co.com.sofkau.model.generic;
 
+import reactor.core.publisher.Mono;
+
 public interface EventBus {
 
-     void publish(DomainEvent event) ;
+     Mono<Void> publish(DomainEvent event) ;
 
-     void publishError(Throwable errorEvent);
+     Mono<Void> publishError(Throwable errorEvent);
 }
