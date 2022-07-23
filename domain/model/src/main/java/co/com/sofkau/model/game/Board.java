@@ -40,6 +40,6 @@ public class Board extends Entity<BoardId> {
     }
 
     public void addCard(PlayerId playerId, GameCard gameCard) {
-        this.cardByPlayer.put(playerId, gameCard);
+        this.cardByPlayer.putIfAbsent(playerId, gameCard);
     }
 }
