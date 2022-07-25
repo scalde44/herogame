@@ -1,9 +1,6 @@
 package co.com.sofkau.api.card.route;
 
-import co.com.sofkau.api.card.handler.CreateCardHandler;
-import co.com.sofkau.api.card.handler.DeleteCardHandler;
-import co.com.sofkau.api.card.handler.FindAllCardsHandler;
-import co.com.sofkau.api.card.handler.UpdateCardHandler;
+import co.com.sofkau.api.card.handler.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -33,5 +30,9 @@ public class RouterRest {
     @Bean
     public RouterFunction<ServerResponse> routerDeleteCardFunction(DeleteCardHandler handler) {
         return route(DELETE("/api/v1/cards/{id}"), handler::delete);
+    }
+    @Bean
+    public RouterFunction<ServerResponse> routerCardByIdFunction(CardByIdHandler handler){
+        return route(GET("/api/v1/cards/{id}"), handler::cardById);
     }
 }
