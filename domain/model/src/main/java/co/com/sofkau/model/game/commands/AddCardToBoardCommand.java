@@ -1,42 +1,42 @@
 package co.com.sofkau.model.game.commands;
 
-import co.com.sofkau.model.game.identities.GameId;
-import co.com.sofkau.model.game.identities.PlayerId;
-import co.com.sofkau.model.game.values.GameCard;
 import co.com.sofkau.model.generic.Command;
 
 public class AddCardToBoardCommand extends Command {
-    private GameId gameId;
-    private PlayerId playerId;
-    private GameCard gameCard;
+    private String gameId;
+    private String playerId;
+    private String cardId;
 
-    public AddCardToBoardCommand(GameId gameId, PlayerId playerId, GameCard gameCard) {
-        this.gameId = gameId;
-        this.playerId = playerId;
-        this.gameCard = gameCard;
+    public AddCardToBoardCommand() {
     }
 
-    public GameId getGameId() {
+    public AddCardToBoardCommand(String gameId, String playerId, String cardId) {
+        this.gameId = gameId;
+        this.playerId = playerId;
+        this.cardId = cardId;
+    }
+
+    public String getGameId() {
         return gameId;
     }
 
-    public void setGameId(GameId gameId) {
+    public void setGameId(String gameId) {
         this.gameId = gameId;
     }
 
-    public PlayerId getPlayerId() {
+    public String getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(PlayerId playerId) {
+    public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
 
-    public GameCard getGameCard() {
-        return gameCard;
+    public String getCardId() {
+        return cardId;
     }
 
-    public void setGameCard(GameCard gameCard) {
-        this.gameCard = gameCard;
+    public void setCardId(String cardId) {
+        this.cardId = cardId;
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
+
 @Component
 @RequiredArgsConstructor
 public class MongoEventStoreRepository implements EventStoreRepository {
@@ -22,7 +24,8 @@ public class MongoEventStoreRepository implements EventStoreRepository {
     public Flux<DomainEvent> getEventsBy(String aggregateName, String aggregateRootId) {
         var query = new Query(Criteria.where("aggregateRootId").is(aggregateRootId));
         return mongoTemplate.find(query, DocumentEventStored.class, aggregateName)
-                .map((documentEventStored -> documentEventStored.getStoredEvent().deserializeEvent(eventSerializer)));
+                .map((documentEventStored -> documentEventStored.getStoredEvent().deserializeEvent(eventSerializer)))
+                .sort(Comparator.comparing(DomainEvent::getWhen));
     }
 
     @Override

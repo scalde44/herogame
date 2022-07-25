@@ -153,4 +153,8 @@ public abstract class DomainEvent implements Serializable {
     public void setAggregateName(String aggregate) {
         this.aggregate = aggregate;
     }
+
+    public Instant getWhen() {
+        return when;
+    }
 }

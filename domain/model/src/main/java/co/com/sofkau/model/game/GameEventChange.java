@@ -1,10 +1,10 @@
 package co.com.sofkau.model.game;
 
 import co.com.sofkau.model.game.events.*;
-import co.com.sofkau.model.game.values.RoundNumber;
 import co.com.sofkau.model.generic.EventChange;
 
 import java.util.HashSet;
+import java.util.Objects;
 
 public class GameEventChange extends EventChange {
     public GameEventChange(Game game) {
@@ -12,6 +12,7 @@ public class GameEventChange extends EventChange {
             game.dateGame = event.getDateGame();
             game.players = new HashSet<>();
             game.rounds = new HashSet<>();
+            game.isPlaying = Boolean.FALSE;
         });
 
         apply((AddedPlayer event) -> {
@@ -21,7 +22,9 @@ public class GameEventChange extends EventChange {
         apply((CreatedBoard event) -> {
             game.board = new Board(event.getBoardId());
         });
-
+        apply((GameStarted event) -> {
+            game.isPlaying = Boolean.TRUE;
+        });
         apply((DistributedCards event) -> {
             game.getPlayer(event.getPlayerId())
                     .ifPresent(player ->
@@ -29,14 +32,16 @@ public class GameEventChange extends EventChange {
                     );
         });
 
-        apply((CreateRound event) -> {
-            game.rounds.add(new Round(event.getRoundId(), new RoundNumber(game.rounds.size() + 1)));
+        apply((CreatedRound event) -> {
+            game.rounds.add(new Round(event.getRoundId(), event.getRoundNumber()));
         });
 
-        apply((AssignedRoundPlayers event)-> {
-            game.getRound(event.getRoundId())
+        apply((AssignedRoundPlayers event) -> {
+            game.rounds.stream()
+                    .filter(round -> Objects.equals(round.identity(), event.getRoundId()))
+                    .findFirst()
                     .ifPresent(round ->
-                            game.getPlayersToRound().forEach(round::addPlayer));
+                            event.getPlayers().forEach(round::addPlayer));
         });
 
         apply((AddedBoardCard event) -> {

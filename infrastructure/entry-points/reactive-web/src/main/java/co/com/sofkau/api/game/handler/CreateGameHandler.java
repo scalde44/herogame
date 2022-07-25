@@ -26,7 +26,7 @@ public class CreateGameHandler extends HandlerBase {
     public Mono<ServerResponse> create(ServerRequest serverRequest) {
         return serverRequest
                 .bodyToMono(CreateGameCommand.class)
-                .flatMapMany(command -> this.useCase.apply(command))
+                .flatMapMany(this.useCase::apply)
                 .flatMap(domainEvent -> emit(Mono.just(domainEvent)))
                 .then(ServerResponse
                         .status(HttpStatus.CREATED)

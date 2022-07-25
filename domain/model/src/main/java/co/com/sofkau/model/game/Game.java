@@ -9,6 +9,7 @@ import co.com.sofkau.model.game.identities.PlayerId;
 import co.com.sofkau.model.game.identities.RoundId;
 import co.com.sofkau.model.game.values.DateGame;
 import co.com.sofkau.model.game.values.GameCard;
+import co.com.sofkau.model.game.values.RoundNumber;
 import co.com.sofkau.model.generic.AggregateEvent;
 import co.com.sofkau.model.generic.DomainEvent;
 
@@ -23,10 +24,10 @@ public class Game extends AggregateEvent<GameId> {
     protected Set<Player> players;
     protected Set<Round> rounds;
     protected DateGame dateGame;
-    protected Player winner;
+    protected Boolean isPlaying;
 
-    public Game(GameId entityId, PlayerFactory playerFactory, DateGame dateGame) {
-        super(entityId);
+    public Game(GameId gameId, PlayerFactory playerFactory, DateGame dateGame) {
+        super(gameId);
         subscribe(new GameEventChange(this));
         appendChange(new CreatedGame(dateGame)).apply();
         playerFactory.players()
@@ -47,7 +48,11 @@ public class Game extends AggregateEvent<GameId> {
         return game;
     }
 
-    public void startGame(CardsByPlayerFactory cardsByPlayerFactory) {
+    public void startGame() {
+        appendChange(new GameStarted(this.entityId)).apply();
+    }
+
+    public void distributeCards(CardsByPlayerFactory cardsByPlayerFactory) {
         cardsByPlayerFactory.cardsByPlayer()
                 .forEach((playerId, gameCards) ->
                         appendChange(new DistributedCards(playerId, gameCards)).apply()
@@ -55,11 +60,11 @@ public class Game extends AggregateEvent<GameId> {
     }
 
     public void createRound(RoundId roundId) {
-        appendChange(new CreateRound(roundId)).apply();
+        appendChange(new CreatedRound(this.entityId, roundId, new RoundNumber(rounds.size() + 1))).apply();
     }
 
     public void assignRoundPlayers(RoundId roundId) {
-        appendChange(new AssignedRoundPlayers(roundId)).apply();
+        appendChange(new AssignedRoundPlayers(roundId, getPlayersToRound())).apply();
     }
 
     public void addCardToBoard(PlayerId playerId, GameCard gameCard) {
@@ -77,16 +82,14 @@ public class Game extends AggregateEvent<GameId> {
                 .findFirst();
     }
 
-    public Optional<Round> getRound(RoundId roundId) {
-        return rounds.stream()
-                .filter(round -> Objects.equals(round.identity(), roundId))
-                .findFirst();
-    }
-
-    public Set<PlayerId> getPlayersToRound() {
+    private Set<PlayerId> getPlayersToRound() {
         return players.stream()
                 .filter(player -> player.gameCards().size() > 0)
                 .map(Player::identity)
                 .collect(Collectors.toSet());
+    }
+
+    public Set<Player> players() {
+        return Set.copyOf(players);
     }
 }
