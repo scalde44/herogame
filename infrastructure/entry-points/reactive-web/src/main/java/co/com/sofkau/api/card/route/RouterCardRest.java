@@ -11,7 +11,7 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 
 
 @Configuration
-public class RouterRest {
+public class RouterCardRest {
     @Bean
     public RouterFunction<ServerResponse> routerFindAllCardsFunction(FindAllCardsHandler handler) {
         return route(GET("/api/v1/cards"), handler::findAll);
@@ -32,7 +32,7 @@ public class RouterRest {
         return route(DELETE("/api/v1/cards/{id}"), handler::delete);
     }
     @Bean
-    public RouterFunction<ServerResponse> routerCardByIdFunction(CardByIdHandler handler){
+    public RouterFunction<ServerResponse> routerCardByIdFunction(GetCardByIdHandler handler){
         return route(GET("/api/v1/cards/{id}"), handler::cardById);
     }
 }

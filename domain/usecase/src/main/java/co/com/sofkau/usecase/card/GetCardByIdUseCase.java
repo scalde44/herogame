@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
-public class CardByIdUseCase {
+public class GetCardByIdUseCase {
     private final CardRepository cardRepository;
 
     public Mono<Card> cardById(String id) {
