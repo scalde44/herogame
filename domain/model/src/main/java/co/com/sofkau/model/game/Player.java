@@ -45,14 +45,13 @@ public class Player extends Entity<PlayerId> {
     }
 
     public void removeCard(GameCard gameCard) {
-        String cardId = Objects.requireNonNull(gameCard.value().cardId());
+        String cardId = Objects.requireNonNull(gameCard.value().card().id());
         this.gameCards.removeIf(
                 gc -> Objects.equals(
-                        gc.value().cardId(),
+                        gc.value().card().id(),
                         cardId
                 )
         );
-
     }
 
     @Override

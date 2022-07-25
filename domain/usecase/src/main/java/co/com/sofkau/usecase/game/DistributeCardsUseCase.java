@@ -50,7 +50,7 @@ public class DistributeCardsUseCase implements Function<GameStarted, Flux<Domain
         Collections.shuffle(cards);
         return Flux.fromIterable(cards)
                 .take(5)
-                .map(card -> new GameCard(card.id(), Boolean.FALSE))
+                .map(card -> new GameCard(card, Boolean.FALSE))
                 .collect(Collectors.toSet())
                 .block();
     }

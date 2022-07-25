@@ -26,7 +26,10 @@ public class GameEventChange extends EventChange {
             game.isPlaying = Boolean.TRUE;
         });
         apply((DistributedCards event) -> {
-            game.getPlayer(event.getPlayerId())
+            game.players.stream()
+                    .filter(player ->
+                            Objects.equals(player.identity(), event.getPlayerId()))
+                    .findFirst()
                     .ifPresent(player ->
                             event.getGameCards().forEach(player::addCard)
                     );
@@ -34,6 +37,12 @@ public class GameEventChange extends EventChange {
 
         apply((CreatedRound event) -> {
             game.rounds.add(new Round(event.getRoundId(), event.getRoundNumber()));
+        });
+        apply((FinishedRound event) -> {
+            game.rounds.stream()
+                    .filter(round -> Objects.equals(round.identity(), event.getRoundId()))
+                    .findFirst()
+                    .ifPresent(round ->round.finish(event.getWinner()));
         });
 
         apply((AssignedRoundPlayers event) -> {

@@ -1,15 +1,16 @@
 package co.com.sofkau.model.game.values;
 
+import co.com.sofkau.model.card.Card;
 import co.com.sofkau.model.generic.ValueObject;
 
 import java.util.Objects;
 
 public class GameCard implements ValueObject<GameCard.Properties> {
-    private final String cardId;
+    private final Card card;
     private final Boolean isHidden;
 
-    public GameCard(String cardId, Boolean isHidden) {
-        this.cardId = Objects.requireNonNull(cardId);
+    public GameCard(Card card, Boolean isHidden) {
+        this.card = Objects.requireNonNull(card);
         this.isHidden = Objects.requireNonNull(isHidden);
     }
 
@@ -17,8 +18,8 @@ public class GameCard implements ValueObject<GameCard.Properties> {
     public Properties value() {
         return new Properties() {
             @Override
-            public String cardId() {
-                return cardId;
+            public Card card() {
+                return card;
             }
 
             @Override
@@ -29,7 +30,7 @@ public class GameCard implements ValueObject<GameCard.Properties> {
     }
 
     public interface Properties {
-        String cardId();
+        Card card();
 
         Boolean isHidden();
     }
@@ -39,11 +40,11 @@ public class GameCard implements ValueObject<GameCard.Properties> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameCard gameCard = (GameCard) o;
-        return cardId.equals(gameCard.cardId) && isHidden.equals(gameCard.isHidden);
+        return card.equals(gameCard.card) && isHidden.equals(gameCard.isHidden);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cardId, isHidden);
+        return Objects.hash(card, isHidden);
     }
 }

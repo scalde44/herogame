@@ -15,7 +15,6 @@ import java.util.function.Function;
 public class CreateGameUseCase implements Function<CreateGameCommand, Flux<DomainEvent>> {
     @Override
     public Flux<DomainEvent> apply(CreateGameCommand command) {
-
         var game = new Game(
                 GameId.of(command.getGameId()),
                 command.getUsersId().stream()

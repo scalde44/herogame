@@ -25,6 +25,14 @@ public class Board extends Entity<BoardId> {
         return Map.copyOf(cardByPlayer);
     }
 
+    public Boolean existCardByPlayerId(PlayerId playerId) {
+        return cardByPlayer.containsKey(playerId);
+    }
+
+    public GameCard cardByPlayerId(PlayerId playerId) {
+        return Map.copyOf(cardByPlayer).get(playerId);
+    }
+
     public Time time() {
         return time;
     }

@@ -14,6 +14,7 @@ public class Round extends Entity<RoundId> {
     private Set<PlayerId> playerIds;
     private RoundNumber roundNumber;
     private Boolean isFinished;
+    private PlayerId winner;
 
     public Round(RoundId entityId, RoundNumber roundNumber) {
         super(entityId);
@@ -26,16 +27,17 @@ public class Round extends Entity<RoundId> {
         return playerIds;
     }
 
-    public RoundNumber roundNumber() {
-        return roundNumber;
+    public Integer roundNumber() {
+        return roundNumber.value();
     }
 
     public Boolean isFinished() {
         return isFinished;
     }
 
-    public void finish() {
+    public void finish(PlayerId winner) {
         this.isFinished = Boolean.TRUE;
+        this.winner = winner;
     }
 
     public void addPlayer(PlayerId playerId) {

@@ -13,9 +13,9 @@ import co.com.sofkau.model.game.values.RoundNumber;
 import co.com.sofkau.model.generic.AggregateEvent;
 import co.com.sofkau.model.generic.DomainEvent;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -68,18 +68,15 @@ public class Game extends AggregateEvent<GameId> {
     }
 
     public void addCardToBoard(PlayerId playerId, GameCard gameCard) {
-        appendChange(new AddedBoardCard(playerId, gameCard)).apply();
+        appendChange(new AddedBoardCard(playerId, gameCard, roundActive())).apply();
     }
 
     public void emptyBoard() {
         appendChange(new CleanedBoard()).apply();
     }
 
-    public Optional<Player> getPlayer(PlayerId playerId) {
-        return this.players.stream()
-                .filter(player ->
-                        Objects.equals(player.identity(), playerId))
-                .findFirst();
+    public void finishRound(RoundId roundId) {
+        appendChange(new FinishedRound(roundId, getWinnerBy(roundId))).apply();
     }
 
     private Set<PlayerId> getPlayersToRound() {
@@ -89,7 +86,34 @@ public class Game extends AggregateEvent<GameId> {
                 .collect(Collectors.toSet());
     }
 
+    private PlayerId getWinnerBy(RoundId roundId) {
+        Round roundFound = rounds.stream()
+                .filter(round -> Objects.equals(round.identity(), roundId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No se encontro la ronda"));
+        var cardMax = roundFound.playerIds().stream()
+                .filter(playerId -> board.existCardByPlayerId(playerId))
+                .map(playerId -> board.cardByPlayerId(playerId))
+                .max(Comparator.comparing(gameCard -> gameCard.value().card().power()))
+                .orElseThrow(() -> new IllegalArgumentException("No se encontro ganador"));
+        return board.cardByPlayer().entrySet()
+                .stream()
+                .filter(entry -> cardMax.value().card().id().equals(entry.getValue().value().card().id()))
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("No se encontro ganador")).getKey();
+
+    }
+
+    public Round roundActive() {
+        return this.rounds.stream()
+                .min(Comparator.comparing(Round::roundNumber))
+                .orElseThrow(() -> new IllegalArgumentException("Ronda no encontrada"));
+    }
+
     public Set<Player> players() {
         return Set.copyOf(players);
+    }
+
+    public Boolean isPlaying() {
+        return isPlaying;
     }
 }
