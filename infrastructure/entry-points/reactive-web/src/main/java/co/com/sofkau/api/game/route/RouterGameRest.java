@@ -2,6 +2,7 @@ package co.com.sofkau.api.game.route;
 
 import co.com.sofkau.api.game.handler.AddCardToBoardHandler;
 import co.com.sofkau.api.game.handler.CreateGameHandler;
+import co.com.sofkau.api.game.handler.FinishRoundHandler;
 import co.com.sofkau.api.game.handler.StartGameHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,5 +28,10 @@ public class RouterGameRest {
     @Bean
     public RouterFunction<ServerResponse> routerStartGameFunction(StartGameHandler handler) {
         return route(POST("/api/v1/game/start"), handler::start);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> routerFinishRoundFunction(FinishRoundHandler handler) {
+        return route(POST("/api/v1/game/round/finish"), handler::finish);
     }
 }

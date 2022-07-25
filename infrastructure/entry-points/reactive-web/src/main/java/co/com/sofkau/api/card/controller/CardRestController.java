@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RestController
-@RequestMapping("/api/v1/cards")
+//@RestController
+//@RequestMapping("/api/v1/cards")
 public class CardRestController extends HandlerBase {
     private final CreateCardUseCase createCardUseCase;
     private final UpdateCardUseCase updateCardUseCase;
