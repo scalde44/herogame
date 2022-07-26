@@ -12,4 +12,6 @@ public interface UserRepository {
     Mono<User> findById(String id);
 
     Flux<User> findAll();
+
+    Mono<Boolean> findByEmail(String email);
 }
