@@ -1,5 +1,6 @@
-package co.com.sofkau.model.game;
+package co.com.sofkau.model.game.events;
 
+import co.com.sofkau.model.game.Player;
 import co.com.sofkau.model.game.identities.GameId;
 import co.com.sofkau.model.generic.DomainEvent;
 

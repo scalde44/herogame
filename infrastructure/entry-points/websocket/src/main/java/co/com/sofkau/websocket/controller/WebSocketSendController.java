@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Component
-@ServerEndpoint("/game/events/{correlationId}")
+@ServerEndpoint("/events/{correlationId}")
 public class WebSocketSendController implements SocketSendMessage {
     private static final Logger logger = Logger.getLogger(WebSocketSendController.class.getName());
     private static Map<String, Map<String, Session>> sessions;
