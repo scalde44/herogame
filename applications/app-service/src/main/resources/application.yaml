@@ -13,7 +13,7 @@ spring:
     include: null
   data:
     mongodb:
-      uri: ${MONGO_URI:mongodb+srv://retoweb:<password>@clusterreto.ikmfg.mongodb.net/?retryWrites=true&w=majority}
+      uri: ${MONGO_URI:mongodb://localhost:27017}
       database: ${MONGO_DATABASE:herogame}
   rabbitmq:
     addresses: { BUS_URI:amqp://guest:guest@localhost:5672 }

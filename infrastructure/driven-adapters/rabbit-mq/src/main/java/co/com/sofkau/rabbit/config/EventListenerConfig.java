@@ -1,14 +1,10 @@
 package co.com.sofkau.rabbit.config;
 
-import co.com.sofkau.model.game.events.CreatedRound;
-import co.com.sofkau.model.game.events.GameStarted;
-import co.com.sofkau.usecase.game.AssignRoundPlayersUseCase;
-import co.com.sofkau.usecase.game.CreateRoundUseCase;
-import co.com.sofkau.usecase.game.DistributeCardsUseCase;
+import co.com.sofkau.model.game.events.*;
+import co.com.sofkau.usecase.game.*;
 import co.com.sofkau.usecase.generic.UseCaseWrap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import reactor.core.publisher.Flux;
 
 import java.util.Set;
 
@@ -16,12 +12,18 @@ import java.util.Set;
 public class EventListenerConfig {
     @Bean
     public Set<UseCaseWrap> useCasesForListener(CreateRoundUseCase createRoundUseCase,
-                                                 DistributeCardsUseCase distributeCardsUseCase,
-                                                 AssignRoundPlayersUseCase assignRoundPlayersUseCase) {
+                                                DistributeCardsUseCase distributeCardsUseCase,
+                                                AssignRoundPlayersUseCase assignRoundPlayersUseCase,
+                                                DistributeWinningCardsUseCase distributeWinningCardsUseCase,
+                                                RemoveLosingCardsUseCase removeLosingCardsUseCase,
+                                                ValidateGameWinnerUseCase validateGameWinnerUseCase) {
         return Set.of(
                 new UseCaseWrap(createRoundUseCase, GameStarted.EVENT_TYPE),
                 new UseCaseWrap(distributeCardsUseCase, GameStarted.EVENT_TYPE),
-                new UseCaseWrap(assignRoundPlayersUseCase, CreatedRound.EVENT_TYPE)
+                new UseCaseWrap(assignRoundPlayersUseCase, CreatedRound.EVENT_TYPE),
+                new UseCaseWrap(distributeWinningCardsUseCase, FinishedRound.EVENT_TYPE),
+                new UseCaseWrap(removeLosingCardsUseCase, DistributedWinningCards.EVENT_TYPE),
+                new UseCaseWrap(validateGameWinnerUseCase, RemovedLosingCards.EVENT_TYPE)
         );
     }
 }

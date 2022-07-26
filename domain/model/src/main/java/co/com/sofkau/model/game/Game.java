@@ -25,6 +25,8 @@ public class Game extends AggregateEvent<GameId> {
     protected Set<Round> rounds;
     protected DateGame dateGame;
     protected Boolean isPlaying;
+    protected Boolean isFinished;
+    protected Player winner;
 
     public Game(GameId gameId, PlayerFactory playerFactory, DateGame dateGame) {
         super(gameId);
@@ -52,10 +54,26 @@ public class Game extends AggregateEvent<GameId> {
         appendChange(new GameStarted(this.entityId)).apply();
     }
 
+    public void finishGame(Player winner) {
+        appendChange(new GameFinished(this.entityId, winner)).apply();
+    }
+
     public void distributeCards(CardsByPlayerFactory cardsByPlayerFactory) {
         cardsByPlayerFactory.cardsByPlayer()
                 .forEach((playerId, gameCards) ->
                         appendChange(new DistributedCards(playerId, gameCards)).apply()
+                );
+    }
+
+    public void distributeWinningCards(PlayerId playerId, RoundId roundId) {
+        appendChange(new DistributedWinningCards(this.entityId, playerId, roundId)).apply();
+    }
+
+    public void removeLosingCards(PlayerId playerId, RoundId roundId) {
+        players.stream()
+                .filter(player -> !player.identity().equals(playerId))
+                .forEach(
+                        player -> appendChange(new RemovedLosingCards(this.entityId, playerId, player.identity(), roundId)).apply()
                 );
     }
 
@@ -76,7 +94,7 @@ public class Game extends AggregateEvent<GameId> {
     }
 
     public void finishRound(RoundId roundId) {
-        appendChange(new FinishedRound(roundId, getWinnerBy(roundId))).apply();
+        appendChange(new FinishedRound(this.entityId, roundId, getWinnerBy(roundId))).apply();
     }
 
     private Set<PlayerId> getPlayersToRound() {
@@ -101,6 +119,15 @@ public class Game extends AggregateEvent<GameId> {
                 .filter(entry -> cardMax.value().card().id().equals(entry.getValue().value().card().id()))
                 .findFirst().orElseThrow(() -> new IllegalArgumentException("No se encontro ganador")).getKey();
 
+    }
+
+    protected Set<GameCard> losingCards(PlayerId winnerId) {
+        return board.cardByPlayer()
+                .entrySet()
+                .stream()
+                .filter(mapita -> !mapita.getKey().equals(winnerId))
+                .map(mapita -> mapita.getValue())
+                .collect(Collectors.toSet());
     }
 
     public Round roundActive() {
