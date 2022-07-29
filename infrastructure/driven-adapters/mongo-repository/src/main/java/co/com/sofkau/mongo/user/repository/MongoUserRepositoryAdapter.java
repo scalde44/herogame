@@ -8,6 +8,7 @@ import co.com.sofkau.mongo.user.collection.UserDocument;
 import co.com.sofkau.mongo.user.collection.value.EmailDocumentValue;
 import co.com.sofkau.mongo.user.helper.MapperUserEntity;
 import org.springframework.data.domain.Example;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
@@ -20,11 +21,12 @@ public class MongoUserRepositoryAdapter extends AdapterOperations<User, UserDocu
     }
 
     @Override
-    public Mono<Boolean> findByEmail(String email) {
+    public Mono<User> findByEmail(String email) {
         var example = Example.of(UserDocument.builder().email(new EmailDocumentValue(email)).build());
         return repository.findBy(
-                example,
-                reactiveQuery -> reactiveQuery.exists()
-        );
+                        example,
+                        FluentQuery.ReactiveFluentQuery::first
+                )
+                .map(userDocument -> (User) mapper.toEntity(userDocument));
     }
 }
