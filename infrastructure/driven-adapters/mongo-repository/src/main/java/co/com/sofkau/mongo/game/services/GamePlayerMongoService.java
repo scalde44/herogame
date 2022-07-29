@@ -24,7 +24,7 @@ public class GamePlayerMongoService implements GamePlayerService {
     public Mono<Player> getGamePlayerBy(GameId gameId, String userId) {
         return reactiveMongoTemplate
                 .findOne(
-                        new Query(where(AGGREGATE_ROOT_ID).is(gameId.value())),
+                        new Query(where(AGGREGATE_ROOT_ID).is(gameId.value()).and("userId").is(userId)),
                         AddedPlayerRecord.class,
                         AddedPlayer.EVENT_TYPE
                 )
