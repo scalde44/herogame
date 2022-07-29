@@ -1,4 +1,4 @@
-package co.com.sofkau.usecase.game;
+package co.com.sofkau.usecase.game.listeners;
 
 import co.com.sofkau.model.game.Game;
 import co.com.sofkau.model.game.events.RemovedLosingCards;
