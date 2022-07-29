@@ -32,8 +32,14 @@ public class RouterGameRest {
     public RouterFunction<ServerResponse> routerFinishRoundFunction(FinishRoundHandler handler) {
         return route(POST("/api/v1/game/round/finish"), handler::finish);
     }
+
     @Bean
-    public RouterFunction<ServerResponse> routerGetEventsFunction(GetEventsHandler handler){
+    public RouterFunction<ServerResponse> routerGetEventsFunction(GetEventsHandler handler) {
         return route(GET("/api/v1/game/events/{gameId}"), handler::getEvents);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> routerGetGamePlayerFunction(GetGamePlayerHandler handler) {
+        return route(GET("/api/v1/game/{gameId}/players/{userId}"), handler::findPlayerByGameIdAndUserId);
     }
 }

@@ -1,7 +1,7 @@
 package co.com.sofkau.rabbit.config;
 
 import co.com.sofkau.model.game.events.*;
-import co.com.sofkau.usecase.game.*;
+import co.com.sofkau.usecase.game.listeners.*;
 import co.com.sofkau.usecase.generic.UseCaseWrap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
